@@ -16,5 +16,7 @@ defmodule PhoenixChat.Accounts.User do
     user
     |> cast(attrs, [:nickname])
     |> validate_required([:nickname])
+    |> validate_length(:nickname, min: 3, max: 15)
+    |> unique_constraint(:nickname)
   end
 end
