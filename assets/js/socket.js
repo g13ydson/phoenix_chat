@@ -57,43 +57,32 @@ socket.connect()
 // Now that you are connected, you can join channels with a topic:
 
 
-let App = {
-  init() {
+let msg_container = $("#messages")
+let channel = null
 
-    let input = $("#message-input")
-    let sender_nickname = "@emilia"
-    let recipient_nickname = "@gleydson"
-    let msg_container = $("#messages")
-    let channel = null
+$("#button-connect").click(function () {
+  channel = socket.channel(`room:${$("#sender-nickname").val()}`, {})
 
-    channel = socket.channel(`room:${sender_nickname}`, {})
+  channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
 
-    channel.join()
-      .receive("ok", resp => { console.log("Joined successfully", resp) })
-      .receive("error", resp => { console.log("Unable to join", resp) })
-
-
-    input.off("keypress").on("keypress", e => {
-      if (e.keyCode == 13) {
-
-        channel.push("new:message", { recipient_nickname: recipient_nickname, body: input.val() })
-        input.val("")
-      }
+  channel.on("messages", messages => {
+    messages.messages.reverse().forEach(msg => {
+      appendMessage(msg, msg_container)
     })
 
-    channel.on("messages", messages => {
-      console.log(messages)
-      messages.messages.reverse().forEach(msg => {
-        this.appendMessage(msg, msg_container)
-      })
+  })
+});
 
-    })
-  },
+$("#button-send").click(function () {
+  channel.push("new:message", { recipient_nickname: $("#recipient-nickname").val(), body: $("#message-input").val() })
+  $("#message-input").val("")
+});
 
-  appendMessage(msg, msg_container) {
-    msg_container.append(`<br/>${msg.body}`)
-    msg_container.scrollTop(msg_container.prop("scrollHeight"))
-  }
+function appendMessage(msg, msg_container) {
+  msg_container.append(`<br/>${msg.body}`)
+  msg_container.scrollTop(msg_container.prop("scrollHeight"))
 }
 
-App.init()
+export default socket

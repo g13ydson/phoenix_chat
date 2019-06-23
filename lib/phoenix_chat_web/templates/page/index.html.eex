@@ -1,19 +1,25 @@
 <div class="container">
+
     <div class="row">
-        <label for="nameField">From:</label>
-        <div class="column">
-            <input type="text" placeholder="@nickname" id="sender_nickname" required>
+        <div class="column column-20">
+            <input type="text" placeholder="@nickname" id="sender-nickname" required>
         </div>
-        <label for="nameField">To:</label>
-        <div class="column">
-            <input type="text" placeholder="@nickname" id="recipient_nickname" required>
+        <div class="column"> 
+            <div class="column"><a class="button" href="#" id="button-connect">Connect</a></div>
         </div>
-        <label for="nameField">Message:</label>
-        <div class="column column-50">
+    </div>
+
+    <div class="row">
+        <div class="column column-20">
+            <input type="text" placeholder="@nickname" id="recipient-nickname" required>
+        </div>
+        <label>Message:</label>
+        <div class="column column-30">
             <input type="text" placeholder="Message" id="message-input" required>
         </div>
-        <div class="column"><a class="button" href="#">Send</a></div>
+        <div class="column"><a class="button" href="#" id="button-send">Send</a></div>
     </div>
+
 </div>
 
 <div id="messages" class="container">
