@@ -4,9 +4,8 @@ defmodule PhoenixChat.Chats.Message do
 
   schema "messages" do
     field :body, :string
-
-    belongs_to :recipient, PhoenixChat.Accounts.User
-    belongs_to :sender, PhoenixChat.Accounts.User
+    field :sender_nickname, :string
+    field :recipient_nickname, :string
 
     timestamps()
   end
@@ -14,9 +13,7 @@ defmodule PhoenixChat.Chats.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:body, :sender_id, :recipient_id])
-    |> validate_required([:body, :sender_id, :recipient_id])
-    |> foreign_key_constraint(:sender_id)
-    |> foreign_key_constraint(:recipient_id)
+    |> cast(attrs, [:body, :sender_nickname, :recipient_nickname])
+    |> validate_required([:body, :sender_nickname, :recipient_nickname])
   end
 end

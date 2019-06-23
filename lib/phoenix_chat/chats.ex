@@ -14,22 +14,22 @@ defmodule PhoenixChat.Chats do
 
   def get_message!(id), do: Repo.get!(Message, id)
 
-  def get_sender_messages(sender_id) do
+  def get_sender_messages(sender_nickname) do
     query =
       from m in Message,
-        where: m.sender_id == ^sender_id,
+        where: m.sender_nickname == ^sender_nickname,
         order_by: [desc: m.inserted_at],
-        preload: [:sender]
+        select: %{body: m.body}
 
     Repo.all(query)
   end
 
-  def get_recipient_messages(recipient_id) do
+  def get_recipient_messages(recipient_nickname) do
     query =
       from m in Message,
-        where: m.recipient_id == ^recipient_id,
+        where: m.recipient_nickname == ^recipient_nickname,
         order_by: [desc: m.inserted_at],
-        preload: [:recipient]
+        select: %{body: m.body}
 
     Repo.all(query)
   end

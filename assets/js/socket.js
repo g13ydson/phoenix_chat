@@ -6,9 +6,9 @@
 //
 // Pass the token on params as below. Or remove it
 // from the params if you are not using authentication.
-import {Socket} from "phoenix"
+import { Socket } from "phoenix"
 
-let socket = new Socket("/socket", {params: {token: window.userToken}})
+let socket = new Socket("/socket", { params: { token: window.userToken } })
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -55,9 +55,45 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
 
-export default socket
+
+let App = {
+  init() {
+
+    let input = $("#message-input")
+    let sender_nickname = "@emilia"
+    let recipient_nickname = "@gleydson"
+    let msg_container = $("#messages")
+    let channel = null
+
+    channel = socket.channel(`room:${sender_nickname}`, {})
+
+    channel.join()
+      .receive("ok", resp => { console.log("Joined successfully", resp) })
+      .receive("error", resp => { console.log("Unable to join", resp) })
+
+
+    input.off("keypress").on("keypress", e => {
+      if (e.keyCode == 13) {
+
+        channel.push("new:message", { recipient_nickname: recipient_nickname, body: input.val() })
+        input.val("")
+      }
+    })
+
+    channel.on("messages", messages => {
+      console.log(messages)
+      messages.messages.reverse().forEach(msg => {
+        this.appendMessage(msg, msg_container)
+      })
+
+    })
+  },
+
+  appendMessage(msg, msg_container) {
+    msg_container.append(`<br/>${msg.body}`)
+    msg_container.scrollTop(msg_container.prop("scrollHeight"))
+  }
+}
+
+App.init()

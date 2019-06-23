@@ -2,15 +2,15 @@
     <div class="row">
         <label for="nameField">From:</label>
         <div class="column">
-            <input type="text" placeholder="@nickname" id="nameField" required>
+            <input type="text" placeholder="@nickname" id="sender_nickname" required>
         </div>
         <label for="nameField">To:</label>
         <div class="column">
-            <input type="text" placeholder="@nickname" id="nameField" required>
+            <input type="text" placeholder="@nickname" id="recipient_nickname" required>
         </div>
         <label for="nameField">Message:</label>
         <div class="column column-50">
-            <input type="text" placeholder="Message" id="nameField" required>
+            <input type="text" placeholder="Message" id="message-input" required>
         </div>
         <div class="column"><a class="button" href="#">Send</a></div>
     </div>
