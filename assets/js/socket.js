@@ -61,6 +61,7 @@ let msg_container = $("#messages")
 let channel = null
 
 $("#button-connect").click(function () {
+  msg_container.empty()
   channel = socket.channel(`room:${$("#sender-nickname").val()}`, {})
 
   channel.join()
@@ -81,7 +82,7 @@ $("#button-send").click(function () {
 });
 
 function appendMessage(msg, msg_container) {
-  msg_container.append(`<br/>${msg.body}`)
+  msg_container.append(`<br/> <b>${msg.sender_nickname}</b> says: <i>${msg.body}</i>`)
   msg_container.scrollTop(msg_container.prop("scrollHeight"))
 }
 

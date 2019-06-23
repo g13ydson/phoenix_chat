@@ -24,7 +24,7 @@ defmodule PhoenixChatWeb.RoomChannel do
          }) do
       {:ok, msg} ->
         Endpoint.broadcast("room:#{payload["recipient_nickname"]}", "messages", %{
-          messages: [%{body: payload["body"]}]
+          messages: [%{sender_nickname: socket.assigns.sender_nickname, body: payload["body"]}]
         })
 
         {:reply, :ok, socket}

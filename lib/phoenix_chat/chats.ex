@@ -19,7 +19,7 @@ defmodule PhoenixChat.Chats do
       from m in Message,
         where: m.sender_nickname == ^sender_nickname,
         order_by: [desc: m.inserted_at],
-        select: %{body: m.body}
+        select: %{sender_nickname: m.sender_nickname, body: m.body}
 
     Repo.all(query)
   end
@@ -29,7 +29,7 @@ defmodule PhoenixChat.Chats do
       from m in Message,
         where: m.recipient_nickname == ^recipient_nickname,
         order_by: [desc: m.inserted_at],
-        select: %{body: m.body}
+        select: %{sender_nickname: m.sender_nickname, body: m.body}
 
     Repo.all(query)
   end
